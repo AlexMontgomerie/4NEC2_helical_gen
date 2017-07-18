@@ -96,31 +96,32 @@ class class_4NEC2:
 class geometry:
   def __init__(self):
     
-	#variable for resolution (size of each segment)
-	self.resolution
-	self.res_const = 100
+    #variable for resolution (size of each segment)
+    self.resolution
+    self.res_const = 100
 	
-	#list of co-ordinates
-	self.co_ordinates = []
+    #list of co-ordinates
+    self.co_ordinates = []
 	
-	#helical parameters
-	self.pitch
-	self.diameter
-	self.length
+    #helical parameters
+    self.pitch
+    self.diameter
+    self.length
 	
-	#variables (other)
-	self.radius = self.diameter/2
-	self.theta
-	
+    #variables (other)
+    self.radius = self.diameter/2
+    self.theta = 0
+    self.height = 0
+ 
   def radial_to_cartesian(self, r, theta, h):
-	x = r * cos(theta)
-	y = r * sin(theta)
-	z = h
-	
-	return [x,y,z]  
+    x = r * cos(theta)
+    y = r * sin(theta)
+    z = h	
+    return [x,y,z]  
 	
   def helical_inc_theta(self, d_theta):
-	self.h = #TODO: function of self.h and self.theta
+    d_height = 2*self.radius*sin(d_theta/2)*tan(self.pitch)
+    self.height = self.height + d_height
 		
 if __name__ == "__main__":
   
