@@ -10,16 +10,24 @@ def file_handler_append(self, text):
 #function to handle read operations
 def file_handler_read(self):
   file_type = open(self.file_name, "r")
+  file_type.close()
   #TODO: finish
 
 class CM:
   def __init__(self, comment):
     self.comment = comment
+    self.CM_out = []
+	
+  def construct(self):
+    self.CM_out = ["CM ", self.comment, "\n"]
 
 class SY:
   def __init__(self, name, value):
     self.name = name
     self.value = value
+	
+  def construct(self):
+	#TODO: construct the SY type
 
 class GW:
   def __init__(self, wire_num, wire_seg, start, end, radius):
@@ -34,14 +42,24 @@ class GW:
     self.end_x = end[0]
     self.end_y = end[1]
     self.end_z = end[2]
+  
+  def construct(self):
+	#TODO: construct the GW type
+
+class LD:
+
+class EX:
+
+class FR:
+
 
 #class for NEC structures
 class class_4NEC2:
-  def __init__(self, file_name, CM, SY, GW):
+  def __init__(self, file_name, CM_in, SY_in, GW_in):
     
-    self.CM_data = CM
-    self.SY_data = SY
-    self.GW_data = GW
+    self.CM_data = CM_in
+    self.SY_data = SY_in
+    self.GW_data = GW_in
     
     #file info
     self.file_name = file_name
@@ -63,13 +81,9 @@ class class_4NEC2:
     self.FR_size = 0    
     
     #TODO: add external functions to class
-    4NEC2.append = file_handler_append
-    4NEC2.check = file_handler_check
+    self.append = file_handler_append
+    self.check = file_handler_check
 
-  def write_comment(self):
-    self.append("CM")
-    self.append(self.comment)
-    
   def set_bases(self):
     self.CM_base = 0
     self.SY_base = self.CM_base + self.CM_size
@@ -79,20 +93,34 @@ class class_4NEC2:
     self.FR_base = self.EX_base + self.EX_size
 
 #class to handle geometry
-#TODO:create class
 class geometry:
   def __init__(self):
-    self.resolution
-    self.shape_gen #=helical_gen
-
-  def get_co_ordinates:
     
-
-#function to generate helical wire antenna
-#TODO: write
-def helical_gen(pitch, diameter, wire_radius):
-  #function will define 
-  return
-
+	#variable for resolution (size of each segment)
+	self.resolution
+	self.res_const = 100
+	
+	#list of co-ordinates
+	self.co_ordinates = []
+	
+	#helical parameters
+	self.pitch
+	self.diameter
+	self.length
+	
+	#variables (other)
+	self.radius = self.diameter/2
+	self.theta
+	
+  def radial_to_cartesian(self, r, theta, h):
+	x = r * cos(theta)
+	y = r * sin(theta)
+	z = h
+	
+	return [x,y,z]  
+	
+  def helical_inc_theta(self, d_theta):
+	self.h = #TODO: function of self.h and self.theta
+		
 if __name__ == "__main__":
   
