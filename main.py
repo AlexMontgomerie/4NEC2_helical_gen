@@ -1,12 +1,42 @@
 from math import cos, sin #for the geometry.radial_to_cartesian(*args) function
 
-#function to handle file appending operations
-def file_handler_append(self, text):
-  file_type = open(self.file_name, "a")
-  file_type.write(text)
-  file_type.write("\n")
-  file_type.close()
-  #TODO: finish  
+#
+def file_handler_append(path, text):
+  """Handles file appending operations"""
+  with open(path,'a') as file_type:
+    file_type.write(text)
+    file_type.write("\n")
+  #TODO: finish
+
+def writeLine(Class, I1, I2, F1, F2, F3, F4, F5, F6, F7):
+  """Writes a generic line for a .nec file"""
+  #Check types and convert for better reliability
+  assert(type(Class) == str)
+  assert(Class.isupper())
+
+  I1 = int(I1)
+  I2 = int(I2)
+
+  F1 = float(F1)
+  F2 = float(F2)
+  F3 = float(F3)
+  F4 = float(F4)
+  F5 = float(F5)
+  F6 = float(F6)
+  F7 = float(F7)
+
+  s = '' #output string
+  #Line type first (+space)
+  s += Class + ' '
+
+  #I1 I2 (+spaces)
+  assert(I1<10**5)
+  assert(I2<10**5) 
+  s += '{:>5} {:>5}'.format(I1,I2)
+
+  #F1-F7 (+spaces)
+ 
+
 
 #function to handle read operations
 def file_handler_read(self):
@@ -24,6 +54,7 @@ class CM:
     self.CM_out = []
     
   def construct(self):
+    """ This writes the appropriate line in the .nec file"""
     self.CM_out = "CM " + self.comment + "\n"
     #Should we just return that string instead of creating a new prop?
 
@@ -38,7 +69,7 @@ class SY:
 
 class GW:
   """
-  The GW class defines a wire segment. A (GW) segment has the folowing properties:
+  The GW class defines a strait wire. A (GW) segment has the folowing properties:
       -start_x, start_y, start_z The coordinates of the start point (float)
     -end_x, end_y, end_z The coordinates of the end point of the segment (float)
     -wire_num an ID for the wire (int)
@@ -72,9 +103,11 @@ class EX:
 
 class FR:
   """
-  The FR class describes the frequencies used for the analysis, it has the folowing properties:
-      - frequency, the first frequency considered in MHz (float)
-    - increment, size of steps in MHz or noUnits when sweeping a frequency domain (float)
+  The FR class describes the frequencies used for the analysis, 
+  it has the folowing properties:
+    - frequency, the first frequency considered in MHz (float)
+    - increment, size of steps in MHz or noUnits when sweeping
+        a frequency domain (float)
     - nsteps, number of steps considered (default 1) (int)
     - incType, type of incrementation: (int)
         + 0 : linear, frequency incremented by self.increment at each step
