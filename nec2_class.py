@@ -48,7 +48,7 @@ class GE:
     self.GE_out = "GE " + gpflag + "\n"
 
   def validate(self):
-    if !isinstance(gpflag, int):
+    if not isinstance(gpflag, int):
       raise ValueError('GE: gpflag must be an integer') 
 
     if !(gpflag >= -1 or gpflag <= 1):
@@ -57,15 +57,56 @@ class GE:
 
 class GH:
   """
+  Purpose to generate helix or spiral of wire segments
+  ITG: tag number assigned to all segments of the helix/spiral
+  NS: number of segments into which the helix/spiral is divided
+  S: Spacing between turns
+  HL: Total length of the helix
+  A1: radius in x at z = 0
+  B1: radius in y at z = 0
+  A2: radius in x at z = HL
+  B2: radius in y at z = HL
+  RAD: Radius of the wire
 
+  Note,
+    Structure is a helix if A2 = A1 and HL > 0
+    Structure is a spiral if A2 = A1 and HL = 0
+    HL > 0 gives right-handed helix
+    HL < 0 gives left-handed helix
+
+  Refer to http://www.nec2.org/part_3/cards/gh.html for more information
   """
-  def __init__(self):
-    pass
+  def __init__(self,ITG=0,NS=0,S=0,HL=0,A1=0,B1=0,A2=0,B2=0,RAD=0):
+    self.ITG  = 
+    self.NS   =
+    self.S    =
+    self.HL   =
+    self.A1   =
+    self.B1   =
+    self.A2   =
+    self.B2   =
+    self.RAD  =
   
+    self.GH_out = "GH"    
+
   def construct(self):
-    pass
+    self.GH_out = "GH " + self.ITG + " " + self.NS + " " + self.S + " " + \
+    self.HL + " " + self.A1 + " " + self.B1 + " " + self.A2 + " " + self.B2 + " " + self.RAD + "\n"
+   
+    return self.GH_out
+
+  def get_pitch(self):
+    #TODO: calculate pitch as a function of the other parameters
+    pitch = None
+    return pitch
+
+  def get_spacing(self):
+    #TODO: calculate spacing between wires as function of parameters
+    spacing = None
+    return spacing
 
   def validate(self):
+    #check that they are of the right type (at least ITG and NS are > 0 and integers)    
     pass
 
 
