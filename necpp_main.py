@@ -29,9 +29,8 @@ nSeg = 1000
 nHelix = 2
 #Helixes:
 ang = 360./nHelix #deg
-for n in range(nHelix):
-    g.helix(0, nSeg, antennaPitch, antennaHeight, antennaRadius1, \
-        antennaYRadius1,antennaXRadius2, antennaYRadius2, wireRadius)
-    g.move(0,0,ang)
+g.helix(1, nSeg, antennaPitch, antennaHeight, antennaRadius1, \
+    antennaYRadius1,antennaXRadius2, antennaYRadius2, wireRadius)
+g.move(0,0,ang,0,0,0,1,1,1)
 
 #Second helix
