@@ -1,4 +1,4 @@
-"""
+" ""
 Classes to implimented
   - EK (maybe?)
   - EN
@@ -23,6 +23,9 @@ class EN:
   def __init__(self):
     self.EN_out = "EN"
   
+  def explain(self):    
+    pass
+
   def construct(self):
     return self.EN_out
 
@@ -77,17 +80,20 @@ class GH:
   Refer to http://www.nec2.org/part_3/cards/gh.html for more information
   """
   def __init__(self,ITG=0,NS=0,S=0,HL=0,A1=0,B1=0,A2=0,B2=0,RAD=0):
-    self.ITG  = 
-    self.NS   =
-    self.S    =
-    self.HL   =
-    self.A1   =
-    self.B1   =
-    self.A2   =
-    self.B2   =
-    self.RAD  =
+    self.ITG  = ITG 
+    self.NS   = NS
+    self.S    = S
+    self.HL   = HL
+    self.A1   = A1
+    self.B1   = B1
+    self.A2   = A2
+    self.B2   = B2
+    self.RAD  = RAD
   
     self.GH_out = "GH"    
+
+  def explain(self):
+    pass
 
   def construct(self):
     self.GH_out = "GH " + self.ITG + " " + self.NS + " " + self.S + " " + \
@@ -107,14 +113,32 @@ class GH:
 
   def validate(self):
     #check that they are of the right type (at least ITG and NS are > 0 and integers)    
-    pass
+    if not isinstance(self.ITG, int):
+      raise ValueError('GH: ITG must be an integer')
+    if not isinstance(self.NS, int):
+      raise ValueError('GH: NS must be an integer')
+    #check rad > 0
+    if self.RAD <= 0:
+      raise ValueError('GH: wire radius must be larger than 0')
 
 
 class GN:
   """
-
+  specify the ground plane parameters
+  IPERF: ground type flag
+    * -1  - nullifies previous ground parameters (remainder must be blank)
+    * 0   - finite ground, reflection coefficient approximation
+    * 1   - perfectly conductig ground
+    * 2   - finite ground, Sommerfield/Norton method
+  NRADL: number of radial wires in ground plane screen
+  EPSE: dielectric constant for ground (in antenna vicintity)
+  SIG: conductivity of ground (in antenna vicintity)
+  
   """
   def __init__(self):
+    pass
+
+  def explain(self):
     pass
   
   def construct(self):
@@ -187,6 +211,9 @@ class CM:
   def __init__(self, comment):
     self.comment = comment
     self.CM_out = None
+
+  def explain(self):
+    pass
     
   def construct(self):
     """ This writes the appropriate line in the .nec file"""
@@ -196,6 +223,7 @@ class CM:
   def validate(self):
     pass
 
+
 #TODO: this might only be for 4nec2, so maybe not have it?
 class SY:
   """
@@ -204,6 +232,9 @@ class SY:
   def __init__(self, name, value):
     self.name = name
     self.value = value
+
+  def explain(self):
+    pass
     
   def construct(self):
     pass
@@ -211,6 +242,7 @@ class SY:
 
   def validate(self):
     pass
+
 
 class GW:
   """
@@ -236,9 +268,14 @@ class GW:
     self.end_y = end[1]
     self.end_z = end[2]
   
+  def explain(self):  
+
   def construct(self):
     pass
-    #TODO: construct the GW type
+
+  def validate(self):
+    pass
+
 
 class LD:
   """
@@ -246,6 +283,8 @@ class LD:
   """
   def __init__(self):
     pass
+
+  def explain(self):
   
   def construct(self):
     pass
@@ -261,6 +300,9 @@ class EX:
   def __init__(self):
     pass
   
+  def explain(self):  
+    pass
+
   def construct(self):
     pass
 
