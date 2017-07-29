@@ -13,16 +13,16 @@ typedef struct {
   nec_float ant_rad;
   nec_float wire_rad;
   nec_float spacing;
-  nec_flaot length;
+  nec_float length;
   
-} helical_param_t;
+} helix_param_t;
 
 
 //function to create an nec type
-nec_context get_antenna(helical_param_t helical_param, int tag_id, )
+nec_context get_antenna(helix_param_t helix_param, int tag_id)
 {
   //variable initialisation
-  int seg_count = SEG_CONSTANT * (int) ceil(helical_param.length * 100);
+  int seg_count = (int) ceil(helix_param.length * 100 * SEG_CONSTANT);
 
   //create an nec type
   nec_context nec;
@@ -34,16 +34,27 @@ nec_context get_antenna(helical_param_t helical_param, int tag_id, )
   //create first helix
   geo->helix(tag_id,                //tag id
             seg_count,              //segment count
-            helical_param.spacing,  //spacing between helix wires
-            helical_param.length,   //total length of the helix
-            helical_param.ant_rad,  //antenna radius (radius in x at z = 0)
-            helical_param.ant_rad,  //antenna radius (radius in y at z = 0)
-            helical_param.ant_rad,  //antenna radius (radius in x at z = HL)
-            helical_param.ant_rad,  //antenna radius (radius in y at z = HL)
-            helical_param.wire_rad  //radius of the wire
+            helix_param.spacing,  //spacing between helix wires
+            helix_param.length,   //total length of the helix
+            helix_param.ant_rad,  //antenna radius (radius in x at z = 0)
+            helix_param.ant_rad,  //antenna radius (radius in y at z = 0)
+            helix_param.ant_rad,  //antenna radius (radius in x at z = HL)
+            helix_param.ant_rad,  //antenna radius (radius in y at z = HL)
+            helix_param.wire_rad  //radius of the wire
+            );
+  
+  //create second helix (rotated by 180 degrees)
+  geo->move(0,    //rotation in x
+            0,    //rotation in y
+            180,  //rotation in z
+            0,    //translation in x
+            0,    //translation in y
+            0,    //translation in z
+            0,    //its : specify segments to be moved
+            1,    //nrpt: number of new structures to be generated
+            0     //itgi: segment incriment
             );
 
-  geo->move(
   //finish geometry;
   nec.geometry_complete(0);
     
@@ -64,23 +75,16 @@ int main(int argc, char **argv) {
   try {
     cout << "Nec2++ C++ example. Running (takes a few minutes...)" << endl;
     
-    nec_context nec;
-    nec.initialize();
-    
-    c_geometry* geo = nec.get_geometry();
-    geo->wire(0, 70, -0.048, 0.021, -0.005, 0.035, 0.043, 0.014, 0.001, 1.0, 1.0);
-    geo->wire(0, 66, 0.017, -0.015, 0.014, -0.027, 0.04, -0.031, 0.001, 1.0, 1.0);
-    geo->wire(0, 47, 0.046, -0.01, 0.028, -0.013, -0.005, 0.031, 0.001, 1.0, 1.0);
-    geo->wire(0, 77, -0.048, -0.038, -0.04, 0.049, -0.045, -0.04, 0.001, 1.0, 1.0);
-    nec.geometry_complete(0);
-    
-    nec.gn_card(-1,0,0.0, 0.0, 0.0,0.0, 0.0, 0.0);
-    nec.ld_card(5,0,0,0,3.72e7,0.0,0.0);
-    nec.pt_card(-1, 0, 0, 0);
-    nec.ex_card(EXCITATION_LINEAR, 1, 1, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    nec.fr_card(0, 2, 2400.0, 100.0);
-    nec.rp_card(0, 10, 10, 0,5,0,0, 0.0, 0.0, 9.0, 9.0, 0.0, 0.0);
-    
+    helix_param_t helix_param;
+
+    helix_param.ant_rad   = 0.05;
+    helix_param.wire_rad  = 0.001;
+    helix_param.spacing   = 0.01;
+    helix_param.length    = 0.1;
+
+    //get the nec info for helix
+    nec_context nec = get_antenna(helix_param, 0);
+
     // now get the radiation pattern data. The result index is 0 since
     // this is the first (and only) radiation pattern.
     nec_radiation_pattern* rp = nec.get_radiation_pattern(0);
