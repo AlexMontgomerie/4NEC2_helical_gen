@@ -15,3 +15,24 @@ Will have a class to handle creating the correct geometry for the antenna. Then 
   Verify that the parameters in the class fit NEC2 specification
 * (Optional) relevant functions:
   Any other functions relevant to that class
+
+# CPP install
+
+1. clone the NECPP repo 
+``` 
+git clone https://github.com/tmolteno/necpp 
+```
+1. follow the instructions to install necpp [here](https://github.com/tmolteno/necpp/blob/master/INSTALL.md). make sure you are in the necpp folder. 
+
+1. copy the configuration header into the 4NEC2... folder 
+```
+cp (necpp_location)/config.h (4NEC2_location)/
+```
+1. go to the src folder and export the NECPP_SRC_PATH environmental variable 
+``` 
+export NECPP_SRC_PATH=$PWD
+```
+1. to compile, just go into the cpp folder and call make
+```
+make
+```
