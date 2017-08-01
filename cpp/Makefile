@@ -35,8 +35,8 @@ NECPP_SRC = ${NECPP_SRC_PATH}/c_ggrid.cpp \
             ${NECPP_SRC_PATH}/matrix_algebra.cpp \
             ${NECPP_SRC_PATH}/nec_ground.cpp \
             ${NECPP_SRC_PATH}/c_evlcom.cpp \
-            ${NECPP_SRC_PATH}/cc_plot_card.cpp \
-            ${NECPP_SRC_PATH}/cmisc.cpp \
+            ${NECPP_SRC_PATH}/c_plot_card.cpp \
+            ${NECPP_SRC_PATH}/misc.cpp \
             ${NECPP_SRC_PATH}/nec_context.cpp \
             ${NECPP_SRC_PATH}/nec_output.cpp \
             ${NECPP_SRC_PATH}/c_geometry.cpp \
@@ -55,7 +55,7 @@ CXXFLAGS=-I ${NECPP_SRC_PATH} -I .. -O2 -Wall
 
 
 helix: ${CPP_OBJS} ${NECPP_OBJS}
-	gcc -o helix ${CPP_OBJS} ${NECPP_OBJS} -lstdc++ -lm -llapack
+	gcc -g  -o helix ${CPP_OBJS} ${NECPP_OBJS} -lstdc++ -lm -llapack
 	./helix
 
 cpp_clean:

@@ -7,9 +7,11 @@ using namespace std;
 #include "nec_radiation_pattern.h"
 
 #define SEG_CONSTANT 100
+#define CONDUCTIVITY 3.72e7
 
 //structure for our helix
 typedef struct {
+  
   nec_float ant_rad;
   nec_float wire_rad;
   nec_float spacing;
@@ -32,8 +34,8 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
   c_geometry* geo = nec.get_geometry();
     
   //create first helix
-  geo->helix(tag_id,                //tag id
-            seg_count,              //segment count
+  geo->helix(tag_id,              //tag id
+            seg_count,            //segment count
             helix_param.spacing,  //spacing between helix wires
             helix_param.length,   //total length of the helix
             helix_param.ant_rad,  //antenna radius (radius in x at z = 0)
@@ -57,12 +59,55 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   //finish geometry;
   nec.geometry_complete(0);
-    
-  nec.gn_card(-1,0,0.0, 0.0, 0.0,0.0, 0.0, 0.0);
-  nec.ld_card(5,0,0,0,3.72e7,0.0,0.0);
-  nec.pt_card(-1, 0, 0, 0);
-  nec.ex_card(EXCITATION_LINEAR, 1, 1, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-  nec.fr_card(0, 2, 2400.0, 100.0);
+  
+  //ground plane card (no ground plane)    
+  nec.gn_card(-1,
+              0,
+              0.0,
+              0.0, 
+              0.0,
+              0.0, 
+              0.0, 
+              0.0
+              );
+  
+  //loading card
+  nec.ld_card(5,            //type of loading (wire conductivity)
+              0,            //tag number for wire section to be loaded
+              0,            //number of segments to be loaded
+              0,            //end segment to be loaded
+              CONDUCTIVITY, //wire conductivity
+              0.0,          //(unused)
+              0.0           //(unused)
+              );      
+  //printing card
+  nec.pt_card(-1, //print control (supress current printing) 
+              0,  //number of segments to be printed
+              0,  
+              0
+              );
+  
+  //excitation card
+  nec.ex_card(EXCITATION_LINEAR, //
+              1, 
+              1, 
+              0, 
+              0.0, 
+              0.0,
+              0.0, 
+              0.0, 
+              0.0, 
+              0.0
+              );
+  
+
+  nec.fr_card(0, 
+              2, 
+              2400.0, 
+              100.0
+              );
+  
+
   nec.rp_card(0, 10, 10, 0,5,0,0, 0.0, 0.0, 9.0, 9.0, 0.0, 0.0);
 
   //return nec features  
