@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 #include "c_geometry.h"
@@ -11,12 +13,12 @@ using namespace std;
 
 //structure for our helix
 typedef struct {
-  
+
   nec_float ant_rad;
   nec_float wire_rad;
   nec_float spacing;
   nec_float length;
-  
+
 } helix_param_t;
 
 
@@ -29,10 +31,10 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
   //create an nec type
   nec_context nec;
   nec.initialize();
-  
-  //create geometry type  
+
+  //create geometry type
   c_geometry* geo = nec.get_geometry();
-    
+
   //create first helix
   geo->helix(tag_id,              //tag id
             seg_count,            //segment count
@@ -44,7 +46,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
             helix_param.ant_rad,  //antenna radius (radius in y at z = HL)
             helix_param.wire_rad  //radius of the wire
             );
-  
+
   //create second helix (rotated by 180 degrees)
   geo->move(0,    //rotation in x
             0,    //rotation in y
@@ -59,18 +61,18 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   //finish geometry;
   nec.geometry_complete(0);
-  
-  //ground plane card (no ground plane)    
+
+  //ground plane card (no ground plane)
   nec.gn_card(-1,
               0,
               0.0,
-              0.0, 
               0.0,
-              0.0, 
-              0.0, 
+              0.0,
+              0.0,
+              0.0,
               0.0
               );
-  
+
   //loading card
   nec.ld_card(5,            //type of loading (wire conductivity)
               0,            //tag number for wire section to be loaded
@@ -79,38 +81,38 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               CONDUCTIVITY, //wire conductivity
               0.0,          //(unused)
               0.0           //(unused)
-              );      
+              );
   //printing card
-  nec.pt_card(-1, //print control (supress current printing) 
+  nec.pt_card(-1, //print control (supress current printing)
               0,  //number of segments to be printed
-              0,  
+              0,
               0
               );
-  
+
   //excitation card
   nec.ex_card(EXCITATION_LINEAR, //
-              1, 
-              1, 
-              0, 
-              0.0, 
+              1,
+              1,
+              0,
               0.0,
-              0.0, 
-              0.0, 
-              0.0, 
+              0.0,
+              0.0,
+              0.0,
+              0.0,
               0.0
               );
-  
 
-  nec.fr_card(0, 
-              2, 
-              2400.0, 
+
+  nec.fr_card(0,
+              2,
+              2400.0,
               100.0
               );
-  
+
 
   nec.rp_card(0, 10, 10, 0,5,0,0, 0.0, 0.0, 9.0, 9.0, 0.0, 0.0);
 
-  //return nec features  
+  //return nec features
   return nec;
 }
 
@@ -118,8 +120,9 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
 int main(int argc, char **argv) {
   try {
+    //do we even need this line?
     cout << "Nec2++ C++ example. Running (takes a few minutes...)" << endl;
-    
+
     helix_param_t helix_param;
 
     helix_param.ant_rad   = 0.05;
@@ -133,22 +136,28 @@ int main(int argc, char **argv) {
     // now get the radiation pattern data. The result index is 0 since
     // this is the first (and only) radiation pattern.
     nec_radiation_pattern* rp = nec.get_radiation_pattern(0);
-    
+
     int nth = rp->get_ntheta();
     int nph = rp->get_nphi();
-    
-    cout << endl << "Theta \tPhi \tHorizontal \tVertical \tTotal" << endl;
+
+    //redireting output to out.txt
+    ofstream out("out.txt");
+    streambuf *coutbuf = std::cout.rdbuf(); //keep the old buff
+    //What does that mean idk but it works!
+    cout.rdbuf(out.rdbuf());//now actually redirect
+
+    cout << endl << "Theta ,\tPhi ,\tHorizontal ,\tVertical ,\tTotal" << endl;
     for (int j=0; j<nph; j++) {
       for (int i=0; i<nth; i++) {
         cout
-          << rp->get_theta(i) << "  \t" 
-          << rp->get_phi(j) << "  \t" 
-          << rp->get_power_gain_horiz(i,j) << "  \t" 
-          << rp->get_power_gain_vert(i,j) << "  \t" 
-          << rp->get_power_gain(i,j) << "  \t"
-          << rp->get_etheta_magnitude(i,j) << "  \t"
-          << rp->get_etheta_phase(i,j) << "  \t"
-          << rp->get_ephi_magnitude(i,j) << "  \t"
+          << rp->get_theta(i) << ",\t"
+          << rp->get_phi(j) << "  ,\t"
+          << rp->get_power_gain_horiz(i,j) << "  ,\t"
+          << rp->get_power_gain_vert(i,j) << "  ,\t"
+          << rp->get_power_gain(i,j) << "  ,\t"
+          << rp->get_etheta_magnitude(i,j) << "  ,\t"
+          << rp->get_etheta_phase(i,j) << "  ,\t"
+          << rp->get_ephi_magnitude(i,j) << "  ,\t"
           << rp->get_ephi_phase(i,j)
           << endl;
       }
