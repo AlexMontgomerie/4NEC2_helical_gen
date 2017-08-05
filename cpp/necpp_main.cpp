@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     //What does that mean idk but it works!
     cout.rdbuf(out.rdbuf());//now actually redirect
 
-    cout << endl << "Theta ,\tPhi ,\tHorizontal ,\tVertical ,\tTotal" << endl;
+    cout << endl << "Theta,\t Phi, \tHorizontal, \tVertical, \tTotal" << endl;
     for (int j=0; j<nph; j++) {
       for (int i=0; i<nth; i++) {
         cout
@@ -160,8 +160,10 @@ int main(int argc, char **argv) {
           << rp->get_ephi_magnitude(i,j) << "  ,\t"
           << rp->get_ephi_phase(i,j)
           << endl;
+
       }
     }
+    cout.rdbuf(coutbuf);//end file output
   }
   catch (nec_exception* e) {
     cout << e->get_message() << endl;
