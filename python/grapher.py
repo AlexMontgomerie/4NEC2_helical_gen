@@ -70,7 +70,11 @@ ax=fig.add_subplot(111, projection='3d')
 
 ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
     facecolors=cmap(norm(GAIN)),
-    linewidth=0, antialiased=False, alpha=0.9)
+    linewidth=1, antialiased=True,shade=True, alpha=0.9,edgecolors='#000000')
+
+ax.grid(False)
+ax.set_axis_off()
+
 
 plt.savefig('../pics/out.png')
 plt.show()

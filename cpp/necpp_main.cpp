@@ -8,8 +8,9 @@ using namespace std;
 #include "nec_exception.h"
 #include "nec_radiation_pattern.h"
 
-#define SEG_CONSTANT 10
+#define SEG_CONSTANT 100
 #define CONDUCTIVITY 3.72e7
+#define RES_CONSTANT 100
 
 //structure for our helix
 typedef struct {
@@ -110,7 +111,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               );
 
 
-  nec.rp_card(0, 100, 100, 0,5,0,0, 0.0, -90.0, 3.6, 1.8, 0.0, 0.0);
+  nec.rp_card(0, RES_CONSTANT+1, RES_CONSTANT+1, 0,5,0,0, 0.0, -90.0, 360./RES_CONSTANT, 180./RES_CONSTANT, 0.0, 0.0);
 
   //return nec features
   return nec;
@@ -126,7 +127,7 @@ int main(int argc, char **argv) {
     helix_param.ant_rad   = 0.05;
     helix_param.wire_rad  = 0.001;
     helix_param.spacing   = 0.02;
-    helix_param.length    = 0.5;
+    helix_param.length    = 0.2;
 
     //get the nec info for helix
     nec_context nec = get_antenna(helix_param, 0);
