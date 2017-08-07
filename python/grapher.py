@@ -50,7 +50,6 @@ for j, jtems in enumerate(phiVals):
     for i, item in enumerate(thetaVals):
         GAIN[i,j]=gain[j+i*nTheta]
 #set the colormap
-GAIN=np.abs(GAIN)
 cmap = plt.get_cmap('jet')
 norm = colors.Normalize(vmin=GAIN.min(), vmax=GAIN.max())
 
