@@ -55,12 +55,15 @@ cmap = plt.get_cmap('jet')
 norm = colors.Normalize(vmin=GAIN.min(), vmax=GAIN.max())
 
 #Normalize gain
-NGAIN=GAIN/GAIN.max()
+
+NGAIN=GAIN - GAIN.min()
+
+NGAIN=NGAIN/NGAIN.max()
 
 #clean memory
 del phi, theta, gain
 
-Xs,Ys,Zs = NGAIN*np.sin(PHI)*np.cos(THETA),NGAIN*np.sin(PHI)*np.sin(THETA),NGAIN*np.cos(PHI)
+Xs,Ys,Zs = NGAIN*np.cos(PHI)*np.cos(THETA),NGAIN*np.cos(PHI)*np.sin(THETA),NGAIN*np.sin(PHI)
 del PHI, THETA
 #setup plots
 fig = plt.figure()
@@ -68,7 +71,7 @@ ax=fig.add_subplot(111, projection='3d')
 
 ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
     facecolors=cmap(norm(GAIN)),
-    linewidth=0, antialiased=False, alpha=0.5)
+    linewidth=0, antialiased=False, alpha=0.9)
 
 plt.savefig('../pics/out.png')
 plt.show()
