@@ -8,7 +8,7 @@ using namespace std;
 #include "nec_exception.h"
 #include "nec_radiation_pattern.h"
 
-#define SEG_CONSTANT 100
+#define SEG_CONSTANT 10
 #define CONDUCTIVITY 3.72e7
 
 //structure for our helix
@@ -110,7 +110,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               );
 
 
-  nec.rp_card(0, 10, 10, 0,5,0,0, 0.0, 0.0, 9.0, 9.0, 0.0, 0.0);
+  nec.rp_card(0, 50, 50, 0,5,0,0, 0.0, -90.0, 3.6*2, 1.8*2, 0.0, 0.0);
 
   //return nec features
   return nec;
@@ -120,9 +120,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
 int main(int argc, char **argv) {
   try {
-    //do we even need this line?
     cout << "Nec2++ C++ example. Running (takes a few minutes...)" << endl;
-
     helix_param_t helix_param;
 
     helix_param.ant_rad   = 0.05;
@@ -145,8 +143,7 @@ int main(int argc, char **argv) {
     streambuf *coutbuf = std::cout.rdbuf(); //keep the old buff
     //What does that mean idk but it works!
     cout.rdbuf(out.rdbuf());//now actually redirect
-
-    cout << endl << "Theta,\t Phi, \tHorizontal, \tVertical, \tTotal" << endl;
+    cout << "Theta,\tPhi,\tHorizontal Power Gain,\tVertical Power Gain,\tTotal Power Gain,\tetheta_magnitude,\tetheta_phase,\tephi_magnitude,\tephi_phase" << endl;
     for (int j=0; j<nph; j++) {
       for (int i=0; i<nth; i++) {
         cout
