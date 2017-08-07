@@ -1,0 +1,6 @@
+#ignore compiled files
+*.o
+#ignore helix executable
+helix
+#ignore text files
+.txt
