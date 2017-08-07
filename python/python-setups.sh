@@ -11,6 +11,7 @@ sudo pip install --upgrade pip
 #now get the packages
 sudo pip install numpy matplotlib
 
+sudo apt-get install python-tk
 #do some cool end sript message
 echo '--------------------------------------------'
 echo '--------------- Script ended ---------------'

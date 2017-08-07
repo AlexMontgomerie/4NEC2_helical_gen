@@ -70,5 +70,5 @@ ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
     facecolors=cmap(norm(GAIN)),
     linewidth=0, antialiased=False, alpha=0.5)
 
-plt.savefig('pics/out.png')
+plt.savefig('../pics/out.png')
 plt.show()
