@@ -4,3 +4,5 @@
 helix
 #ignore text files
 .txt
+#ignore compiled python files
+*.pyc
