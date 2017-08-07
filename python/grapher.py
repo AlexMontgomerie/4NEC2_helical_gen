@@ -9,6 +9,7 @@ import  numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.cm as cm
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -68,13 +69,17 @@ del PHI, THETA
 fig = plt.figure()
 ax=fig.add_subplot(111, projection='3d')
 
-ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
+plot = ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
     facecolors=cmap(norm(GAIN)),
     linewidth=1, antialiased=True,shade=True, alpha=0.9,edgecolors='#000000')
+
+m = cm.ScalarMappable(cmap=cm.jet)
+m.set_array(GAIN)
+
 
 ax.grid(False)
 ax.set_axis_off()
 
-
+plt.colorbar(m)
 plt.savefig('../pics/out.png')
 plt.show()
