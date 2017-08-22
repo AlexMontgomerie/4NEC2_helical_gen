@@ -12,6 +12,11 @@ using namespace std;
 #define CONDUCTIVITY 3.72e7
 #define RES_CONSTANT 100 //Resolution of the output (expect O(RES_CONSTANT^2) datapoints)
 
+#define SOL       300000000
+#define FREQUENCY 406000000
+
+#define PI 3.142
+
 //structure for our helix
 typedef struct {
 
@@ -22,6 +27,54 @@ typedef struct {
 
 } helix_param_t;
 
+int get_seg_count()
+{
+  return (int) ceil(helix_param.length * 100 * SEG_CONSTANT);
+}
+
+void get_inside_cone_avg()
+{
+
+}
+
+void get_outside_cone_avg()
+{
+
+}
+
+bool check_parameter(helix_param_t helix_param)
+{
+  
+  //number of segments
+  int seg_count = (int) ceil(helix_param.length * 100 * SEG_CONSTANT);
+
+  //find lambda
+  double lambda = SOL/FREQUENCY;
+
+  //get wire radius
+  double radius = helix_param.wire_rad;
+
+  //get delta (approximately)
+  double delta =  (2*PI*radius) /
+                  (seg /
+                  (helix_param.length /
+                  helix_param.spacing));
+  //printf("delta: %f\n",delta);  
+
+  if(delta > 0.1*lambda)
+    return false;
+
+  if(delta < 0.001*lambda)
+    return false; 
+
+  if((2*PI*radius)/lambda > 1)
+    return false; 
+
+  if(delta/radius < 2)
+    return false; 
+
+  return true;
+}
 
 //function to create an nec type
 nec_context get_antenna(helix_param_t helix_param, int tag_id)
@@ -48,6 +101,18 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
             helix_param.wire_rad  //radius of the wire
             );
 
+  geo->helix(tag_id + 1,          //tag id
+            seg_count,            //segment count
+            helix_param.spacing,  //spacing between helix wires
+            helix_param.length,   //total length of the helix
+            helix_param.ant_rad,  //antenna radius (radius in x at z = 0)
+            helix_param.ant_rad,  //antenna radius (radius in y at z = 0)
+            helix_param.ant_rad,  //antenna radius (radius in x at z = HL)
+            helix_param.ant_rad,  //antenna radius (radius in y at z = HL)
+            helix_param.wire_rad  //radius of the wire
+            );
+
+
   //create second helix (rotated by 180 degrees)
   geo->move(0,    //rotation in x
             0,    //rotation in y
@@ -56,7 +121,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
             0,    //translation in y
             0,    //translation in z
             0,    //its : specify segments to be moved
-            1,    //nrpt: number of new structures to be generated
+            0,    //nrpt: number of new structures to be generated
             0     //itgi: segment incriment
             );
 
@@ -92,7 +157,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   //excitation card
   nec.ex_card(EXCITATION_LINEAR, //
-              1,
+              0,
               1,
               0,
               0.0,
@@ -104,9 +169,23 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               );
 
 
+  //excitation card
+  nec.ex_card(EXCITATION_LINEAR, //
+              1,
+              -1,
+              0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+              );
+
+
   nec.fr_card(0,
-              2,
-              2400.0,
+              1,
+              (FREQUENCY/1000000),
               100.0
               );
 
@@ -124,10 +203,17 @@ int main(int argc, char **argv) {
     cout << "Nec2++ C++ example. Running (takes a few minutes...)" << endl;
     helix_param_t helix_param;
 
-    helix_param.ant_rad   = 0.025;
+    helix_param.ant_rad   = 0.05;
     helix_param.wire_rad  = 0.001;
-    helix_param.spacing   = 0.02;
-    helix_param.length    = 0.5;
+    helix_param.spacing   = 0.01;
+    helix_param.length    = 0.1;
+
+    //make sure helix parameters are ok for necpp
+    if(!check_parameter(helix_param))
+    {
+      printf("ERROR! helix parameters do not work with necpp");
+      exit(1);
+    }
 
     //get the nec info for helix
     nec_context nec = get_antenna(helix_param, 0);
@@ -138,7 +224,7 @@ int main(int argc, char **argv) {
 
     int nth = rp->get_ntheta();
     int nph = rp->get_nphi();
-
+    
     //redireting output to out.txt
     ofstream out("out.txt");
     streambuf *coutbuf = std::cout.rdbuf(); //keep the old buff
@@ -162,6 +248,7 @@ int main(int argc, char **argv) {
       }
     }
     cout.rdbuf(coutbuf);//end file output
+    
   }
   catch (nec_exception* e) {
     cout << e->get_message() << endl;
