@@ -11,11 +11,12 @@ from matplotlib import colors
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.cm as cm
 
+#call console input
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         path = sys.argv[1]
     else:
-        raise ValueError('Data file path missing')
+        raise ValueError('Data file path missing. Hint: ../cpp/out.txt')
 
 
 
@@ -62,6 +63,7 @@ NGAIN=NGAIN/NGAIN.max()
 
 #clean memory
 del phi, theta, gain
+print PHI, THETA
 
 Xs,Ys,Zs = NGAIN*np.cos(PHI)*np.sin(THETA),NGAIN*np.sin(PHI)*np.sin(THETA),NGAIN*np.cos(THETA)
 del PHI, THETA
@@ -75,8 +77,6 @@ plot = ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
 
 m = cm.ScalarMappable(cmap=cm.jet)
 m.set_array(GAIN)
-
-
 ax.grid(False)
 ax.set_axis_off()
 

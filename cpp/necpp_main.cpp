@@ -10,7 +10,7 @@ using namespace std;
 
 #define SEG_CONSTANT 10
 #define CONDUCTIVITY 3.72e7
-
+#define RES_CONSTANT 50 //
 //structure for our helix
 typedef struct {
 
@@ -109,8 +109,8 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               100.0
               );
 
-
-  nec.rp_card(0, 51, 51, 0,5,0,0, 0.0, -90.0, 3.6*2, 1.8*2, 0.0, 0.0);
+  nec.rp_card(0, RES_CONSTANT+1, RES_CONSTANT+1, 0,5,0,0, 0.0, -90.0,
+        360/RES_CONSTANT, 180/RES_CONSTANT, 0.0, 0.0);
 
   //return nec features
   return nec;
