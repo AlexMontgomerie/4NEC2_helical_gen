@@ -63,7 +63,7 @@ NGAIN=NGAIN/NGAIN.max()
 #clean memory
 del phi, theta, gain
 
-Xs,Ys,Zs = NGAIN*np.cos(PHI)*np.cos(THETA),NGAIN*np.cos(PHI)*np.sin(THETA),NGAIN*np.sin(PHI)
+Xs,Ys,Zs = NGAIN*np.cos(PHI)*np.sin(THETA),NGAIN*np.sin(PHI)*np.sin(THETA),NGAIN*np.cos(THETA)
 del PHI, THETA
 #setup plots
 fig = plt.figure()
