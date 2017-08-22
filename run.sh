@@ -4,7 +4,7 @@ cd cpp
 
 make -j4
 
-wait
+echo 'compile end'
 
 cd ../python
 

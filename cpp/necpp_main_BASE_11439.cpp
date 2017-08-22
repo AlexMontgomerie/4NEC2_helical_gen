@@ -8,14 +8,10 @@ using namespace std;
 #include "nec_exception.h"
 #include "nec_radiation_pattern.h"
 
-#define SEG_CONSTANT 10
+#define SEG_CONSTANT 100
 #define CONDUCTIVITY 3.72e7
-<<<<<<< HEAD
-#define RES_CONSTANT 50 //
-=======
-#define RES_CONSTANT 100 //Resolution of the output (expect O(RES_CONSTANT^2) datapoints)
+#define RES_CONSTANT 100
 
->>>>>>> 40c6728f48e87c4980ce154a7b153232c445e5cb
 //structure for our helix
 typedef struct {
 
@@ -55,7 +51,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
   //create second helix (rotated by 180 degrees)
   geo->move(0,    //rotation in x
             0,    //rotation in y
-            180., //rotation in z
+            180,  //rotation in z
             0,    //translation in x
             0,    //translation in y
             0,    //translation in z
@@ -114,13 +110,8 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
               100.0
               );
 
-<<<<<<< HEAD
-  nec.rp_card(0, RES_CONSTANT+1, RES_CONSTANT+1, 0,5,0,0, 0.0, -90.0,
-        360/RES_CONSTANT, 180/RES_CONSTANT, 0.0, 0.0);
-=======
 
-  nec.rp_card(0, RES_CONSTANT+1, RES_CONSTANT+1, 0,5,0,0, 0.0, 0, 360./RES_CONSTANT, 180./RES_CONSTANT, 0.0, 0.0);
->>>>>>> 40c6728f48e87c4980ce154a7b153232c445e5cb
+  nec.rp_card(0, RES_CONSTANT+1, RES_CONSTANT+1, 0,5,0,0, 0.0, -90.0, 360./RES_CONSTANT, 180./RES_CONSTANT, 0.0, 0.0);
 
   //return nec features
   return nec;
@@ -133,15 +124,10 @@ int main(int argc, char **argv) {
     cout << "Nec2++ C++ example. Running (takes a few minutes...)" << endl;
     helix_param_t helix_param;
 
-    helix_param.ant_rad   = 0.025;
+    helix_param.ant_rad   = 0.05;
     helix_param.wire_rad  = 0.001;
-<<<<<<< HEAD
-    helix_param.spacing   = 0.01;
-    helix_param.length    = 0.1;
-=======
     helix_param.spacing   = 0.02;
-    helix_param.length    = 0.5;
->>>>>>> 40c6728f48e87c4980ce154a7b153232c445e5cb
+    helix_param.length    = 0.2;
 
     //get the nec info for helix
     nec_context nec = get_antenna(helix_param, 0);
@@ -156,7 +142,7 @@ int main(int argc, char **argv) {
     //redireting output to out.txt
     ofstream out("out.txt");
     streambuf *coutbuf = std::cout.rdbuf(); //keep the old buff
-    //What does that mean? idk but it works!
+    //What does that mean idk but it works!
     cout.rdbuf(out.rdbuf());//now actually redirect
     cout << "Theta,\tPhi,\tHorizontal Power Gain,\tVertical Power Gain,\tTotal Power Gain,\tetheta_magnitude,\tetheta_phase,\tephi_magnitude,\tephi_phase" << endl;
     for (int j=0; j<nph; j++) {
