@@ -61,5 +61,5 @@ helix: ${CPP_OBJS} ${NECPP_OBJS}
 cpp_clean:
 	rm -f ${CPP_OBJS} ${NECPP_OBJS} 
 
-clean: cpp_clean
+clean: #cpp_clean
 	rm -f helix

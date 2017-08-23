@@ -27,7 +27,7 @@ typedef struct {
 
 } helix_param_t;
 
-int get_seg_count()
+int get_seg_count(helix_param_t helix_param)
 {
   return (int) ceil(helix_param.length * 100 * SEG_CONSTANT);
 }
@@ -49,30 +49,37 @@ bool check_parameter(helix_param_t helix_param)
   int seg_count = (int) ceil(helix_param.length * 100 * SEG_CONSTANT);
 
   //find lambda
-  double lambda = SOL/FREQUENCY;
+  double lambda = SOL/ ((double) FREQUENCY);
 
   //get wire radius
   double radius = helix_param.wire_rad;
 
   //get delta (approximately)
   double delta =  (2*PI*radius) /
-                  (seg /
+                  (seg_count /
                   (helix_param.length /
                   helix_param.spacing));
-  //printf("delta: %f\n",delta);  
+  
+  printf("delta: %f, lambda: %f, radius: %f, seg_count: %d\n",
+          delta, lambda, radius, seg_count);  
 
   if(delta > 0.1*lambda)
+    printf("segments too big!\n");
     return false;
 
   if(delta < 0.001*lambda)
+    printf("segments too small!\n");
     return false; 
 
   if((2*PI*radius)/lambda > 1)
+    printf("wire radius too big!(to do with lambda)\n");
     return false; 
 
   if(delta/radius < 2)
+    printf("wire radius too big! (to do with delta)\n");
     return false; 
-
+    
+  printf("here\n");
   return true;
 }
 
@@ -157,7 +164,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   //excitation card
   nec.ex_card(EXCITATION_LINEAR, //
-              0,
+              tag_id,
               1,
               0,
               0.0,
@@ -171,7 +178,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   //excitation card
   nec.ex_card(EXCITATION_LINEAR, //
-              1,
+              tag_id + 1,
               -1,
               0,
               0.0,
@@ -185,7 +192,7 @@ nec_context get_antenna(helix_param_t helix_param, int tag_id)
 
   nec.fr_card(0,
               1,
-              (FREQUENCY/1000000),
+              (FREQUENCY/((double) 1000000)),
               100.0
               );
 
@@ -208,10 +215,12 @@ int main(int argc, char **argv) {
     helix_param.spacing   = 0.01;
     helix_param.length    = 0.1;
 
+    cout << "result of checking: " << check_parameter(helix_param) << endl;
+
     //make sure helix parameters are ok for necpp
     if(!check_parameter(helix_param))
     {
-      printf("ERROR! helix parameters do not work with necpp");
+      printf("ERROR! helix parameters do not work with necpp\n");
       exit(1);
     }
 
