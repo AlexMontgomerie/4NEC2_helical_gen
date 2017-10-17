@@ -4,6 +4,16 @@ source code to generate .nec files for helical wire antennas. Purpose is to gene
 # Code Structure
 Will have a class to handle creating the correct geometry for the antenna. Then we'll use a handler to translate the geometry into a .nec file for simulation.
 
+will need following modules
+- nec card gen (python script)
+- nec parser (using necpp)
+- output generator (using necpp, or shell script nec2++)
+- parameter learner (some machine learning framework)
+- graphic generator (python) DONE
+
+[stuff on python-necpp](http://astroelec.blogspot.co.uk/2015/05/modeling-antennas-in-python-with-nec2.html)
+[nec card generator](https://sourceforge.net/p/nec2pylib/wiki/Home/)
+
 # NEC2 class
 * Class description:
   Include a description of the parameters and a link to the relevant page in nec manual
