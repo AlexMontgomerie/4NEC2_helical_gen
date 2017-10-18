@@ -57,6 +57,11 @@ class nec2:
     '''
     self.geometry += "GH" + dec(tag) + dec(segments)+ sci(s) + sci(l) + sci(rx0) + sci(ry0) + sci(rxl) + sci(ryl) + sci(rad) + "\n"
 
+  def gm(self, ITSI, NRPT, ROX, ROY, ROZ, XS, YS, ZS, ITS):
+    ''' Add the line for a GH card, a helix.
+    '''
+    self.geometry += "GM" + dec(ITSI) + dec(NRPT)+ sci(ROX) + sci(ROY) + sci(ROZ) + sci(XS) + sci(YS) + sci(ZS) + sci(ITS) + "\n"
+	
   def addWire(self, segments, pt1, pt2):
     ''' Append a wire, increment the tag number, and return this object to facilitate a chained attachToEX() call
     '''
@@ -98,16 +103,15 @@ class nec2:
     return self
 
 
-  def ex(self,tag,segment):
+  def ex(self,I1,I2,I3,I4,F1,F2,F3,F4,F5,F6):
     ''' Define excitation parameters.
     '''
-    I1 = 0        # Excitation type. 0 means an "applied-E-field" voltage source
-    I2 = tag      # Tag number of the wire element to which the source will be applied
-    I3 = segment  # Segment within the previously specified wire element to which the source will be applied
-    I4 = 0        # 0 means use defaults for admittance matrix asymmetry and printing input impedance voltage
-    F1 = 1.0      # Real part of voltage
-    F2 = 0.0      # Imaginary part of voltage
-    self.controls += "EX" + dec(I1) + dec(I2) + dec(I3) + dec(I4) + sci(F1) + sci(F2) + "\n"
+    if I1==0:
+      self.controls += "EX" + dec(I1) + dec(I2) + dec(I3) + dec(I4) + sci(F1) + sci(F2) + "\n"
+    
+    else:
+      self.controls += "EX" + dec(I1) + dec(I2) + dec(I3) + dec(I4) + sci(F1) + sci(F2) + sci(F3) + sci(F4)  + sci(F5) + sci(F6) + "\n"
+
     return self
 
   def feedAtMiddle(self):
