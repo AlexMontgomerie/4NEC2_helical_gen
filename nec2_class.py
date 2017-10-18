@@ -1,9 +1,9 @@
-" ""
+"""
 Classes to implimented
   - EK (maybe?)
   - EN
-  - EX  
-  - FR 
+  - EX
+  - FR
   - GE
   - GH
   - GN
@@ -12,18 +12,18 @@ Classes to implimented
   - LD
   - PQ
   - RP
-  
+
 """
 
 class EN:
   """
   To indicate to the program the end of all execution
-  Refer to http://www.nec2.org/part_3/cards/en.html for more information  
+  Refer to http://www.nec2.org/part_3/cards/en.html for more information
   """
   def __init__(self):
     self.EN_out = "EN"
-  
-  def explain(self):    
+
+  def explain(self):
     pass
 
   def construct(self):
@@ -46,16 +46,16 @@ class GE:
   def __init__(self, gpflag=0):
     self.gpflag = gpflag
     self.GE_out = "GE"
-  
+
   def construct(self):
     self.GE_out = "GE " + gpflag + "\n"
 
   def validate(self):
     if not isinstance(gpflag, int):
-      raise ValueError('GE: gpflag must be an integer') 
+      raise ValueError('GE: gpflag must be an integer')
 
     if !(gpflag >= -1 or gpflag <= 1):
-      raise ValueError('GE: gpflag out of bounds') 
+      raise ValueError('GE: gpflag out of bounds')
 
 
 class GH:
@@ -80,7 +80,7 @@ class GH:
   Refer to http://www.nec2.org/part_3/cards/gh.html for more information
   """
   def __init__(self,ITG=0,NS=0,S=0,HL=0,A1=0,B1=0,A2=0,B2=0,RAD=0):
-    self.ITG  = ITG 
+    self.ITG  = ITG
     self.NS   = NS
     self.S    = S
     self.HL   = HL
@@ -89,8 +89,8 @@ class GH:
     self.A2   = A2
     self.B2   = B2
     self.RAD  = RAD
-  
-    self.GH_out = "GH"    
+
+    self.GH_out = "GH"
 
   def explain(self):
     pass
@@ -98,7 +98,7 @@ class GH:
   def construct(self):
     self.GH_out = "GH " + self.ITG + " " + self.NS + " " + self.S + " " + \
     self.HL + " " + self.A1 + " " + self.B1 + " " + self.A2 + " " + self.B2 + " " + self.RAD + "\n"
-   
+
     return self.GH_out
 
   def get_pitch(self):
@@ -112,7 +112,7 @@ class GH:
     return spacing
 
   def validate(self):
-    #check that they are of the right type (at least ITG and NS are > 0 and integers)    
+    #check that they are of the right type (at least ITG and NS are > 0 and integers)
     if not isinstance(self.ITG, int):
       raise ValueError('GH: ITG must be an integer')
     if not isinstance(self.NS, int):
@@ -133,14 +133,14 @@ class GN:
   NRADL: number of radial wires in ground plane screen
   EPSE: dielectric constant for ground (in antenna vicintity)
   SIG: conductivity of ground (in antenna vicintity)
-  
+
   """
   def __init__(self):
     pass
 
   def explain(self):
     pass
-  
+
   def construct(self):
     pass
 
@@ -153,7 +153,7 @@ class GD:
   """
   def __init__(self):
     pass
-  
+
   def construct(self):
     pass
 
@@ -167,7 +167,7 @@ class GS:
   """
   def __init__(self):
     pass
-  
+
   def construct(self):
     pass
 
@@ -181,7 +181,7 @@ class LD:
   """
   def __init__(self):
     pass
-  
+
   def construct(self):
     pass
 
@@ -195,7 +195,7 @@ class PQ:
   """
   def __init__(self):
     pass
-  
+
   def construct(self):
     pass
 
@@ -214,7 +214,7 @@ class CM:
 
   def explain(self):
     pass
-    
+
   def construct(self):
     """ This writes the appropriate line in the .nec file"""
     self.CM_out = "CM " + self.comment + "\n"
@@ -235,7 +235,7 @@ class SY:
 
   def explain(self):
     pass
-    
+
   def construct(self):
     pass
     #TODO: construct the SY type
@@ -258,17 +258,17 @@ class GW:
   def __init__(self, wire_num, wire_seg, start, end, radius):
     self.wire_num = wire_num
     self.wire_seg = wire_seg
-    self.radius = radius    
-    
+    self.radius = radius
+
     self.start_x = start[0]
     self.start_y = start[1]
     self.start_z = start[2]
-    
+
     self.end_x = end[0]
     self.end_y = end[1]
     self.end_z = end[2]
-  
-  def explain(self):  
+
+  def explain(self):
 
   def construct(self):
     pass
@@ -285,7 +285,7 @@ class LD:
     pass
 
   def explain(self):
-  
+
   def construct(self):
     pass
 
@@ -299,8 +299,8 @@ class EX:
   """
   def __init__(self):
     pass
-  
-  def explain(self):  
+
+  def explain(self):
     pass
 
   def construct(self):
@@ -312,7 +312,7 @@ class EX:
 
 class FR:
   """
-  The FR class describes the frequencies used for the analysis, 
+  The FR class describes the frequencies used for the analysis,
   it has the folowing properties:
     - frequency, the first frequency considered in MHz (float)
     - increment, size of steps in MHz or noUnits when sweeping
@@ -339,7 +339,7 @@ class FR:
   def withLogSpace(self, increment = 1.,nsteps = 1):
     """ To define a logarithmic incrementation. Give increment without units """
     self.increment = increment
-    self.nsteps = nsteps    
+    self.nsteps = nsteps
     self.incType = 1
 
   def explain(self):
@@ -351,7 +351,7 @@ class FR:
         strFreq2 = str(self.frequency + self.increment*(self.nsteps - 1))
         print('Sweeping linear domain from ', strFreq1, ' to ', strFreq2,' MHz using ', str(self.nsteps), ' steps')
     elif self.incType == 1:
-        strFreq2 = str(self.frequency*(self.increment**(self.nsteps - 1)))  
+        strFreq2 = str(self.frequency*(self.increment**(self.nsteps - 1)))
         print('Sweeping log domain from ', strFreq1, ' to ', strFreq2,' MHz using ', str(self.nsteps), ' steps')
 
   def construct(self):
@@ -359,4 +359,3 @@ class FR:
 
   def validate(self):
     pass
- 

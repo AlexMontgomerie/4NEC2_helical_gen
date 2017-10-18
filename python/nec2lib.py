@@ -2,7 +2,7 @@ import math
 import os
 
 def sci(f):
-  ''' Return formatted string containing scientific notaion float in a 13 char wide field (xyz coordiates, radius)
+  ''' Return formatted string containing scientific notation float in a 13 char wide field (xyz coordiates, radius)
   '''
   return '{: > 13.5E}'.format(f)
 
@@ -82,7 +82,7 @@ class nec2:
     ''' Card to determine the Ground Parameters
     '''
     self.controls +="GN     0     0     0     0           6.0    1.000E-03\n"
-    return 
+    return
 
 
   def fr(self, startF, stopF, stepCount):
@@ -128,26 +128,26 @@ class nec2:
     '''
     I1 = ldtyp    # Determines the type of loading which is used.
     I2 = ldtag    # Tag number; identifies the wire section(s) to be loaded by its (their) tag numbers.
-    I3 = ldtagf   # Equal to m specifies the mth segment of the set of segments whose tag numbers equal the tag number specified in the previous parameter. 
+    I3 = ldtagf   # Equal to m specifies the mth segment of the set of segments whose tag numbers equal the tag number specified in the previous parameter.
     I4 = ldtagt   # Equal to n specifies the nth segment of the set of segments whose tag numbers equal the tag number specified in the parameter LDTAG.
-    F1 = zlr      # Resistance in ohms, if none, leave blank. 
+    F1 = zlr      # Resistance in ohms, if none, leave blank.
     F2 = zli      # Inductance in henries, if none, leave blank.
-    F3 = zlc      # Capacitance in farads, if none, leave blank. 
+    F3 = zlc      # Capacitance in farads, if none, leave blank.
     self.controls += "LD" + dec(I1) + dec(I2) + dec(I3) + dec(I4)+ sci(F1) + sci(F2) + sci(F3)+ "\n"
     return self
-    
+
   def loadAtMiddle(self,ldtyp,zlr,zli,zlc):
     '''Loading at Middle LD
     '''
     self.ld(ldtyp,self.tag, self.middle, self.middle, zlr, zli, zlc)
     return self
-  
+
   def loadAtEnd(self,ldtyp,zlr,zli,zlc):
     '''Loadin at end LD
     '''
     self.ld(ldtyp,self.tag, 1, 1, zlr, zli, zlc)
     return self
-    
+
 
   def rp(self):
     ''' Card to initiate calculation and output of radiation pattern.
@@ -178,7 +178,7 @@ class nec2:
 
 
   # ---------------------------------------------------------------------------------------------------
-  # Creatin nec2 File 
+  # Creatin nec2 File
   # ---------------------------------------------------------------------------------------------------
 
 
@@ -199,5 +199,3 @@ class nec2:
     print self.comments
     print self.geometry
     print self.controls
-
-
