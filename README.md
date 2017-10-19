@@ -26,6 +26,12 @@ will need following modules
 * (Optional) relevant functions:
   Any other functions relevant to that class
 
+# Running command line NEC
+you can use nec2++ to generate an output file from a given .nec file. example usage:
+```
+nec2++ -i example1.nec -o example1.out
+```
+
 # CPP install
 
 1. clone the NECPP repo 

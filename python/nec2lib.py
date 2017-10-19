@@ -90,16 +90,10 @@ class nec2:
     return 
 
 
-  def fr(self, startF, stopF, stepCount):
+  def fr(self, IFRQ, NFRQ, FMHZ, DELFRQ):
     ''' Define the frequency range to be modeled
     '''
-    IFRQ = 0           # Step type, 0 is linear (additive), 1 = multiplicative
-    NFRQ = stepCount   # Number of frequency steps
-    I3   = 0           # blank
-    I4   = 0           # blank
-    FMHZ   = startF     # Starting frequency in MHz
-    DELFRQ = (stopF-startF)/max(1,(stepCount-1))  # Frequency stepping increment (IFRQ=0), or multiplication factor (IFRQ=1)
-    self.controls += "FR" + dec(IFRQ) + dec(NFRQ) + dec(I3) + dec(I4) + sci(FMHZ) + sci(DELFRQ) + "\n"
+    self.controls += "FR" + dec(IFRQ) + dec(NFRQ) + dec(0) + dec(0) + sci(FMHZ) + sci(DELFRQ) + "\n"
     return self
 
 

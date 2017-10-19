@@ -11,23 +11,35 @@ def parseInput():
   parser.add_argument('-l','--length',type=float,nargs=1)
   #spacing
   parser.add_argument('-s','--spacing',type=float,nargs=1)
-  return parser.parse_args()
+  #freq
+  parser.add_argument('-f','--frequency',type=float,nargs=1)
+  #output file name
+  parser.add_argument('-o','--output',nargs=1)
   
+  return parser.parse_args()
 
 if __name__ == "__main__":
-  
+
+  #get input args  
   args = parseInput()
   
+  #assign variables
   numSeg  = args.numSeg[0]
-  print(numSeg)
   radius  = args.radius[0]
-  print(radius)
   length  = args.length[0]
-  print(length)
   spacing = args.spacing[0]
-  print(spacing)
+  freq    = args.frequency[0]
   wireRadius = 0.0025
 
+  #debug statements
+  print('Number of segements: ',numSeg)
+  print('Radius             : ',radius)
+  print('Length             : ',length)
+  print('spacing            : ',spacing)
+  print('frequency          : ',freq)
+  print('wire radius        : ',wireRadius)
+
+  #nec2 class
   nec_out = nec2(0)
 
   #first helix
@@ -40,6 +52,7 @@ if __name__ == "__main__":
   nec_out.ge(0)
   
   #add frequency card
+  nec_out.fr(0,1,freq,0)
   
   #add excitation card
   nec_out.ex(0,1,1,0,1.0,0,0,0,0,0)
