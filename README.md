@@ -32,6 +32,12 @@ you can use nec2++ to generate an output file from a given .nec file. example us
 nec2++ -i example1.nec -o example1.out
 ```
 
+Installing nec2++ is can be done using:
+
+```
+sudo apt-get install nec2++
+```
+
 # CPP install
 
 1. clone the NECPP repo 
