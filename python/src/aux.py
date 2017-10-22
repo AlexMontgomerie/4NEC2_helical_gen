@@ -2,10 +2,10 @@
 import numpy as np
 
 def shericalToCart(PHI,THETA,R):
-    X=np.sin(THETA)*np.cos(PHI)*R
-    Y=np.sin(THETA)*np.sin(PHI)*R
-    Z=np.cos(THETA)*R
-    return XYZ
+    X=np.sin(THETA*np.pi/180.)*np.cos(PHI*np.pi/180.)*R
+    Y=np.sin(THETA*np.pi/180.)*np.sin(PHI*np.pi/180.)*R
+    Z=np.cos(THETA*np.pi/180.)*R
+    return X,Y,Z
 
 def reduceToDict(X):
     #storing the mapping of the array in a dict to reduce search complexity
@@ -33,9 +33,12 @@ def foldToMeshGrid(X,Y,Z):
     Xmesh, Ymesh = np.meshgrid(xs,ys)#build X,Y mesh
 
     #initialize Z mesh
-    Zmesh = Xmesh
+    Zmesh = np.zeros(np.shape(Xmesh))
 
     for i, item in enumerate(Z):
         Zmesh[ymappings[Y[i]],xmappings[X[i]]] = item
 
     return Xmesh, Ymesh, Zmesh
+
+def normalizer(ARRAY):
+    return ARRAY - ARRAY.min()

@@ -2,13 +2,20 @@
 
 # This script reads stdin to interpret the data from nec2++
 
+#std imports
 import sys
 import copy
 import logging
 import re
 
+#lib inports
 import numpy as np
+import  numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import colors
+from mpl_toolkits.mplot3d import Axes3D
 
+#local imports
 import aux
 
 Logger = logging.getLogger()
@@ -78,7 +85,28 @@ del headers, dataTemp
 #Now we study the actual array
 radiationPattern= dataout[3]
 
-phiCol = radiationPattern[:,0]
-thetaCol = radiationPattern[:,1]
+thetaCol = radiationPattern[:,0]
+phiCol = radiationPattern[:,1]
 gainCol = radiationPattern[:,4]
 PHI, THETA, GAIN = aux.foldToMeshGrid(phiCol,thetaCol,gainCol)
+
+del phiCol,thetaCol,gainCol
+#Colormaps
+cmap = plt.get_cmap('jet')
+norm = colors.Normalize(vmin=GAIN.min(), vmax=GAIN.max())
+
+NGAIN=aux.normalizer(GAIN) #ensures positivity
+#Completing the final conversion to Cartesian coordinates
+
+Xs,Ys,Zs = aux.shericalToCart(PHI,THETA,NGAIN)
+
+#plotting
+fig = plt.figure()
+ax=fig.add_subplot(111, projection='3d')
+
+ax.plot_surface(Xs,Ys,Zs,rstride=1, cstride=1,
+    facecolors=cmap(norm(GAIN)),
+    linewidth=0, antialiased=False, alpha=0.5)
+
+plt.savefig('output/out.png')
+plt.show()
