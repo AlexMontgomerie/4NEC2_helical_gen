@@ -9,6 +9,8 @@ import re
 
 import numpy as np
 
+import aux
+
 Logger = logging.getLogger()
 
 datain = sys.stdin.readlines() #Reading the stdin
@@ -54,6 +56,7 @@ def cleanStrings(l,replacement='NaN'):
             r.append(np.nan)
     return r
 
+#Converting all tables to numpy objects
 for table in Tables:
     for line in table:
         if not numeric.search(line):
@@ -71,3 +74,11 @@ for table in Tables:
     dataTemp=[]
 
 del headers, dataTemp
+
+#Now we study the actual array
+radiationPattern= dataout[3]
+
+phiCol = radiationPattern[:,0]
+thetaCol = radiationPattern[:,1]
+gainCol = radiationPattern[:,4]
+PHI, THETA, GAIN = aux.foldToMeshGrid(phiCol,thetaCol,gainCol)
