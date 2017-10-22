@@ -1,1 +1,1 @@
-nec2++ -iinput/test_nec.nec -ooutput/output.out
+nec2++ -i input/test_nec.nec -o output/output.out -s -c
