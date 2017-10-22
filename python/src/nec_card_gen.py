@@ -13,7 +13,7 @@ def single_wire_gen():
   m.fr(0,0,433.0,0)
   m.ex(0,1,1,0,1,0,0,0,0,0)
   m.rp()
-  m.en
+  m.en()
   #write to file
   m.fileWrite("./test_nec.nec")
 

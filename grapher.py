@@ -55,12 +55,12 @@ cmap = plt.get_cmap('jet')
 norm = colors.Normalize(vmin=GAIN.min(), vmax=GAIN.max())
 
 #Normalize gain
-NGAIN=GAIN/GAIN.max()
+NGAIN=np.abs(GAIN)
 
 #clean memory
 del phi, theta, gain
 
-Xs,Ys,Zs = NGAIN*np.sin(PHI)*np.cos(THETA),NGAIN*np.sin(PHI)*np.sin(THETA),NGAIN*np.cos(PHI)
+Xs,Ys,Zs = NGAIN*np.sin(THETA)*np.cos(PHI),NGAIN*np.sin(THETA)*np.sin(PHI),NGAIN*np.cos(THETA)
 del PHI, THETA
 #setup plots
 fig = plt.figure()
