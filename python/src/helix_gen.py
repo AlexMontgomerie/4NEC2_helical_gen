@@ -61,4 +61,4 @@ if __name__ == "__main__":
   #other shit
   
   #create output file
-  nec_out.fileWrite('output.nec')
+  nec_out.fileWrite('./input/output.nec')
