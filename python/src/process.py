@@ -53,7 +53,7 @@ dataTemp = []
 headers = ''
 numeric = re.compile('[\d]')
 
-#A shorth function to clean out the 'LINEAR' tags
+#A short function to clean out the 'LINEAR' tags
 def cleanStrings(l,replacement='NaN'):
     r = []
     for i in l:

@@ -147,8 +147,9 @@ class nec2:
     return self
 
 
-  def rp(self):
+  def rp(self,I1,NTH,NPH,I4,THETS,PHIS,DTH,DPH):
     ''' Card to initiate calculation and output of radiation pattern.
+    '''
     '''
     I1  = 0      # 0 is normal mode: defaults to free-space unless a previous GN card specified a ground plane
     NTH = 10     # Number of values of theta (angle away from positive Z axis)
@@ -158,6 +159,7 @@ class nec2:
     PHIS  = 0.0  # Phi start value in degrees
     DTH   = 10.0 # Delta-theta in degrees
     DPH   = 18.0 # Delta-phi in degrees
+    '''
     self.controls += "RP" + dec(I1) + dec(NTH) + dec(NPH) + dec(I4) + sci(THETS) + sci(PHIS) + sci(DTH) + sci(DPH) + "\n"
     return self
 

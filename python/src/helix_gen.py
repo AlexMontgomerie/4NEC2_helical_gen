@@ -1,5 +1,6 @@
 from nec2lib import nec2
 import argparse
+import math
 
 def parseInput():
   parser = argparse.ArgumentParser()
@@ -29,7 +30,9 @@ if __name__ == "__main__":
   length  = args.length[0]
   spacing = args.spacing[0]
   freq    = args.frequency[0]
+  
   wireRadius = 0.0025
+  segConst = 5
 
   #debug statements
   print('Number of segements: ',numSeg)
@@ -43,11 +46,14 @@ if __name__ == "__main__":
   nec_out = nec2(0)
 
   #first helix
-  nec_out.gh(1,numSeg,spacing,length,radius,radius,radius,radius,nec_out.wireRadius)
+  nec_out.gh(1,numSeg,spacing,length,radius,radius,radius,radius,wireRadius)
 
   #rotate second helix
   nec_out.gm(1,1,0,0,180.0,0,0,0,0)
 
+  #short the top end of the helix
+  nec_out.gw(3,ceil(numSeg/segConst),-radius,0,length,radius,0,length,wireRadius)
+  
   #end geometry
   nec_out.ge(0)
   
@@ -58,7 +64,8 @@ if __name__ == "__main__":
   nec_out.ex(0,1,1,0,1.0,0,0,0,0,0)
   nec_out.ex(0,2,1,0,-1.0,0,0,0,0,0)
   
-  #other shit
+  #create radiation pattern
+  nec_out.rp(0,37,72,1000,0,0,5,500,0,0)
   
   #create output file
   nec_out.fileWrite('./input/output.nec')
