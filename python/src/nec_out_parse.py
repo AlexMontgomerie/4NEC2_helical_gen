@@ -13,6 +13,8 @@ import numpy as np
 #local imports
 import aux
 
+DEBUG = True
+
 #A short function to clean out the 'LINEAR' tags
 def cleanStrings(l,replacement='NaN'):
     r = []
@@ -22,6 +24,83 @@ def cleanStrings(l,replacement='NaN'):
         except ValueError:
             r.append(np.nan)
     return r
+
+def removeLINEAR(line):
+  return re.sub(r'LINEAR','',line)
+
+def removeEndLine():
+  pass
+
+def parseNECOutTables(outArray):
+  
+  out = 0
+
+  for i in range(len(outArray)):
+    outArray[i] = removeLINEAR(outArray[i])
+  
+  return out
+
+'''
+function to parse for values in relation to power budget
+IN = list of lines
+OUT = dictionary of power budget values
+'''
+def parseNECOutPowerBudget(outArray):
+  
+  #TODO: turn into a dictionary
+  out = {
+    'inputPower'    : 0,
+    'radiatedPower' : 0, 
+    'structureLoss' : 0,
+    'networkLoss'   : 0,
+    'efficiency'    : 0 
+  }
+ 
+  #print outArray 
+  print len(outArray)
+  
+  match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?') 
+  
+  for i in range(len(outArray)):
+
+    #INPUT POWER search
+    searchObj = re.search( r'INPUT POWER', outArray[i], re.M|re.I)
+    if searchObj:
+      val = re.findall(match_number,outArray[i])
+      out['inputPower'] = float(val[0])
+
+    #RADIATED POWER search
+    searchObj = re.search( r'RADIATED POWER', outArray[i], re.M|re.I)
+    if searchObj:
+      val = re.findall(match_number,outArray[i])
+      out['radiatedPower'] = float(val[0])
+
+    #STRUCTURE LOSS search
+    searchObj = re.search( r'STRUCTURE LOSS', outArray[i], re.M|re.I)
+    if searchObj:
+      val = re.findall(match_number,outArray[i])
+      out['structureLoss'] = float(val[0])
+
+    #NETWORK LOSS search
+    searchObj = re.search( r'NETWORK LOSS', outArray[i], re.M|re.I)
+    if searchObj:
+      val = re.findall(match_number,outArray[i])
+      out['networkLoss'] = float(val[0])
+
+    #EFFICIENCY search
+    searchObj = re.search( r'EFFICIENCY', outArray[i], re.M|re.I)
+    if searchObj:
+      val = re.findall(match_number,outArray[i])
+      out['efficiency'] = float(val[0])
+
+  if DEBUG==True:
+    print 'input power: ', out['inputPower']
+    print 'radiated power: ', out['radiatedPower']
+    print 'structure loss: ', out['structureLoss']
+    print 'network loss: ', out['networkLoss']
+    print 'efficiency: ', out['efficiency']
+      
+  return out
 
 def parseNECOutFile(filePath):
  
@@ -86,5 +165,11 @@ def parseNECOutFile(filePath):
   return dataout
 
 if __name__ == "__main__":
-  dataout = parseNECOutFile('../output/output.out')
-  print dataout
+  #dataout = parseNECOutFile('../output/output.out')
+  
+  #open the file and read it
+  fh = open('../output/output.out','r')
+  datain = fh.readlines() 
+ 
+  print parseNECOutPowerBudget(datain)
+  
