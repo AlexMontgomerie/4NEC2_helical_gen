@@ -31,13 +31,46 @@ def removeLINEAR(line):
 def removeEndLine():
   pass
 
+def rowColTransform(table):
+  colLength = len(table[0])
+  rowLength = len(table)
+
+
+
 def parseNECOutTables(outArray):
+
+  out = [[]] 
+  tableIndex = 0 
   
-  out = 0
+  match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?') 
 
   for i in range(len(outArray)):
     outArray[i] = removeLINEAR(outArray[i])
   
+  state = 1
+  state_prev = 1  
+ 
+  for i in range(len(outArray)):
+    
+    state_prev = state
+    val = re.findall(match_number,outArray[i])
+
+    if len(val)>2:
+      state = 0
+      out[tableIndex].append([float(x) for x in val])
+
+    else:
+      state = 1
+
+    if state and not state_prev:
+      out.append([])
+      tableIndex = tableIndex + 1
+
+  if DEBUG==True:
+    for i in range(len(out)):
+      print 'Table: ',i
+      print out[i]
+
   return out
 
 '''
@@ -171,5 +204,5 @@ if __name__ == "__main__":
   fh = open('../output/output.out','r')
   datain = fh.readlines() 
  
-  print parseNECOutPowerBudget(datain)
-  
+  parseNECOutPowerBudget(datain)
+  parseNECOutTables(datain) 
