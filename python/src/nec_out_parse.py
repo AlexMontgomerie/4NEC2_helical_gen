@@ -32,30 +32,14 @@ def removeEndLine():
   pass
 
 def rowColTransform(table):
-
-  print table[0]  
-
-  colLength = len(table[0])
-  rowLength = len(table)
-
-  outTable = [[None]*rowLength]*colLength 
-
-  for i in range(rowLength):
-    for j in range(colLength):
-      outTable[i][j] = table[j][i]
-
-  if DEBUG==True:
-    print outTable
-
-  return outTable
-
+  return zip(*table)
 
 def parseNECOutTables(outArray):
 
   out = [[]] 
   tableIndex = 0 
   
-  match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?') 
+  match_number = re.compile('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *[+\-]?\ *[0-9]+)?') 
 
   for i in range(len(outArray)):
     outArray[i] = removeLINEAR(outArray[i])
