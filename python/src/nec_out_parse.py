@@ -13,7 +13,7 @@ import numpy as np
 #local imports
 import aux
 
-DEBUG = True
+DEBUG = False 
 
 #A short function to clean out the 'LINEAR' tags
 def cleanStrings(l,replacement='NaN'):
