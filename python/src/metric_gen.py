@@ -1,5 +1,6 @@
 import math
 import nec_out_parse 
+import numpy as np
 
 '''
 This source file will take all the tables as input.
@@ -13,30 +14,25 @@ Need to get metrics for
   - directivity
 '''
 
-'''
-#Note, size of ideal must be same as actual
-def getFit2Ideal(datain,idealFilePath):
-  
-  if(
+def getIdealFitness(datain):
+    
+  dataout = nec_out_parse.parseNECOutTables(datain) 
+  dataout = nec_out_parse.rowColTransform(dataout[8])
 
-  totalDiff = 0  
-
+  idealout = 
+ 
   for i in range(len(dataout[7])):
-    magActual = sqrt(dataout[7][i]**2 + dataout[9][i]**2)
-    magIdeal  = sqrt(idealout[7][i]**2 + idealout[9][i]**2)
 
-    totalDiff = totalDiff +abs(magIdeal - magActual)
+  return diff
 
-  return totalDiff
-'''
 
 def getPeak2AvgGain(datain):
   peak = 0
   totalSum = 0
   avg = 0
 
-  dataout = parseNECOutTables(datain) 
-  dataout = rowColTransform(dataout[8])
+  dataout = nec_out_parse.parseNECOutTables(datain) 
+  dataout = nec_out_parse.rowColTransform(dataout[8])
 
   for i in range(len(dataout[7])):
     #theta column
@@ -68,8 +64,8 @@ def getF2BRatio(datain,theta=True):
   front = 0
   back = 0
 
-  dataout = parseNECOutTables(datain) 
-  dataout = rowColTransform(dataout[8])
+  dataout = nec_out_parse.parseNECOutTables(datain) 
+  dataout = nec_out_parse.rowColTransform(dataout[8])
 
   #looking at f2b for theta
   if theta:
@@ -92,12 +88,24 @@ def getF2BRatio(datain,theta=True):
     return front/back
   
   except ZeroDivisionError:
-    return front*100    
+    return front  
+
 
 def getEfficiency(datain):
-  powerData = parseNECOutPowerBudget(datain)
+  powerData = nec_out_parse.parseNECOutPowerBudget(datain)
   return powerData['efficiency']
 
 def getOutPower(datain):
-  powerData = parseNECOutPowerBudget(datain)
+  powerData = nec_out_parse.parseNECOutPowerBudget(datain)
   return powerData['radiatedPower']
+
+if __name__=="__main__":
+   
+  #open the file and read it
+  fh = open('../output/output.out','r')
+  datain = fh.readlines() 
+ 
+  print getOutPower(datain)
+  print getEfficiency(datain)
+  print getF2BRatio(datain)
+  print getPeak2AvgGain(datain)
