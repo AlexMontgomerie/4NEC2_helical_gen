@@ -1,3 +1,6 @@
+import math
+import nec_out_parse 
+
 '''
 This source file will take all the tables as input.
 Need to get metrics for
@@ -10,6 +13,23 @@ Need to get metrics for
   - directivity
 '''
 
+'''
+#Note, size of ideal must be same as actual
+def getFit2Ideal(datain,idealFilePath):
+  
+  if(
+
+  totalDiff = 0  
+
+  for i in range(len(dataout[7])):
+    magActual = sqrt(dataout[7][i]**2 + dataout[9][i]**2)
+    magIdeal  = sqrt(idealout[7][i]**2 + idealout[9][i]**2)
+
+    totalDiff = totalDiff +abs(magIdeal - magActual)
+
+  return totalDiff
+'''
+
 def getPeak2AvgGain(datain):
   peak = 0
   totalSum = 0
@@ -20,13 +40,21 @@ def getPeak2AvgGain(datain):
 
   for i in range(len(dataout[7])):
     #theta column
+    '''
     if dataout[7][i] > peak:
       peak = dataout[7][i]
     totalSum = totalSum + dataout[7][i]
     #phi column
     if dataout[9][i] > peak:
       peak = dataout[9][i]
-    totalSum = totalSum + dataout[9][i]
+    '''
+
+    mag = sqrt(dataout[7][i]**2 + dataout[9][i]**2)
+
+    if mag > peak:
+      peak = mag
+
+    totalSum = totalSum + mag
   
   #TODO: need to actually see if this is the average
   avg = totalSum/(2*len(dataout[7]))
@@ -60,8 +88,11 @@ def getF2BRatio(datain,theta=True):
         back = back + dataout[9][i]
 
   #TODO: probably should check that not doing 0/0
-  return front/back
-      
+  try:
+    return front/back
+  
+  except ZeroDivisionError:
+    return front*100    
 
 def getEfficiency(datain):
   powerData = parseNECOutPowerBudget(datain)

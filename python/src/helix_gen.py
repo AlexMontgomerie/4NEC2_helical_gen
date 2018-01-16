@@ -19,6 +19,57 @@ def parseInput():
   
   return parser.parse_args()
 
+def get_helix_card(x):
+ 
+  #assign variables
+  numSeg  = args.x[0] #numSeg[0]
+  radius  = args.x[1] #radius[0]
+  length  = args.x[2] #length[0]
+  spacing = args.x[3] #spacing[0]
+  freq    = args.x[4] #frequency[0]
+  
+  wireRadius = 0.0025
+  segConst = 5
+
+  #debug statements
+  print('Number of segements: ',numSeg)
+  print('Radius             : ',radius)
+  print('Length             : ',length)
+  print('spacing            : ',spacing)
+  print('frequency          : ',freq)
+  print('wire radius        : ',wireRadius)
+
+  #nec2 class
+  nec_out = nec2(0)
+
+  #first helix
+  nec_out.gh(1,numSeg,spacing,length,radius,radius,radius,radius,wireRadius)
+
+  #rotate second helix
+  nec_out.gm(1,1,0,0,180.0,0,0,0,0)
+
+  #short the top end of the helix
+  nec_out.gw(3,ceil(numSeg/segConst),-radius,0,length,radius,0,length,wireRadius)
+  
+  #end geometry
+  nec_out.ge(0)
+  
+  #add frequency card
+  nec_out.fr(0,1,freq,0)
+  
+  #add excitation card
+  nec_out.ex(0,1,1,0,1.0,0,0,0,0,0)
+  nec_out.ex(0,2,1,0,-1.0,0,0,0,0,0)
+  
+  #create radiation pattern
+  nec_out.rp(0,37,72,1000,0,0,5,500,0,0)
+  
+  #create output file
+  nec_out.fileWrite('./input/output.nec')
+  
+  #end function
+  return
+
 if __name__ == "__main__":
 
   #get input args  
