@@ -22,11 +22,11 @@ def parseInput():
 def get_helix_card(x):
  
   #assign variables
-  numSeg  = args.x[0] #numSeg[0]
-  radius  = args.x[1] #radius[0]
-  length  = args.x[2] #length[0]
-  spacing = args.x[3] #spacing[0]
-  freq    = args.x[4] #frequency[0]
+  numSeg  = x[0] #numSeg[0]
+  radius  = x[1] #radius[0]
+  length  = x[2] #length[0]
+  spacing = x[3] #spacing[0]
+  freq    = x[4] #frequency[0]
   
   wireRadius = 0.0025
   segConst = 5
@@ -49,7 +49,7 @@ def get_helix_card(x):
   nec_out.gm(1,1,0,0,180.0,0,0,0,0)
 
   #short the top end of the helix
-  nec_out.gw(3,ceil(numSeg/segConst),-radius,0,length,radius,0,length,wireRadius)
+  nec_out.gw(3,math.ceil(numSeg/segConst),-radius,0,length,radius,0,length,wireRadius)
   
   #end geometry
   nec_out.ge(0)
@@ -62,10 +62,10 @@ def get_helix_card(x):
   nec_out.ex(0,2,1,0,-1.0,0,0,0,0,0)
   
   #create radiation pattern
-  nec_out.rp(0,37,72,1000,0,0,5,500,0,0)
+  nec_out.rp(0,37,72,1000,0,0,5,500)
   
   #create output file
-  nec_out.fileWrite('./input/output.nec')
+  nec_out.fileWrite('../input/output.nec')
   
   #end function
   return
@@ -116,7 +116,7 @@ if __name__ == "__main__":
   nec_out.ex(0,2,1,0,-1.0,0,0,0,0,0)
   
   #create radiation pattern
-  nec_out.rp(0,37,72,1000,0,0,5,500,0,0)
+  nec_out.rp(0,37,72,1000,0,0,5,500)
   
   #create output file
   nec_out.fileWrite('./input/output.nec')

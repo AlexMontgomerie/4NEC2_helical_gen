@@ -1,12 +1,13 @@
-from scipy.optimise import #...
+#from scipy.optimise import #...
 import os
-from ./helix_gen import get_helix_card
+from helix_gen import get_helix_card
 import metric_gen 
 #import metric_gen 
 
+#python src/helix_gen.py -n 100 -r 5 -l 20 -s 2 -f 406 -o ../output/output.out
 
 #create function to optimise
-def func(x)
+def func(x):
   #create the antenna
   get_helix_card(x)
   #run nec
@@ -19,6 +20,8 @@ def func(x)
   #define weights for each output
   w = [1.0,1.0,1.0,1.0,1.0]
 
+  y = [0,0,0,0,0]
+  
   #get output array
   #y[0] = w[0] * metric_gen.getIdealFitness(datain)
   y[1] = w[1] * metric_gen.getPeak2AvgGain(datain)
@@ -31,3 +34,7 @@ def func(x)
 
 #verify results
 
+
+if __name__=="__main__":
+  x = [100,5,20,2,406]
+  func(x)  

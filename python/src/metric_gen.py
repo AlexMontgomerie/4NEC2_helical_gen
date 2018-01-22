@@ -14,6 +14,7 @@ Need to get metrics for
   - directivity
 '''
 
+'''
 def getIdealFitness(datain):
     
   dataout = nec_out_parse.parseNECOutTables(datain) 
@@ -24,7 +25,7 @@ def getIdealFitness(datain):
   for i in range(len(dataout[7])):
 
   return diff
-
+'''
 
 def getPeak2AvgGain(datain):
   peak = 0
@@ -45,7 +46,7 @@ def getPeak2AvgGain(datain):
       peak = dataout[9][i]
     '''
 
-    mag = sqrt(dataout[7][i]**2 + dataout[9][i]**2)
+    mag = math.sqrt(dataout[7][i]**2 + dataout[9][i]**2)
 
     if mag > peak:
       peak = mag
